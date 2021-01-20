@@ -19,6 +19,7 @@ scene.onOverlapTile(SpriteKind.Player, myTiles.tile3, function (sprite, location
         . . . f f f f f f f . . 
         `)
     tiles.setWallAt(tiles.getTileLocation(7, 2), false)
+    tiles.coverAllTiles(sprites.castle.rock0, sprites.castle.tilePath5)
 })
 scene.onOverlapTile(SpriteKind.Player, myTiles.tile1, function (sprite, location) {
     Soldier.setImage(img`
