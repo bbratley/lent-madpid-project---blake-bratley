@@ -1,4 +1,8 @@
-scene.onOverlapTile(SpriteKind.Player, myTiles.tile3, function (sprite, location) {
+let levelTilemaps = 0
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+	
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`tile3`, function (sprite, location) {
     info.startCountdown(10)
     Soldier.setImage(img`
         . . . . f f f f . . . . 
@@ -19,9 +23,10 @@ scene.onOverlapTile(SpriteKind.Player, myTiles.tile3, function (sprite, location
         . . . f f f f f f f . . 
         `)
     tiles.setWallAt(tiles.getTileLocation(7, 2), false)
+    tiles.coverAllTiles(assets.tile`tile3`, sprites.castle.tileGrass3)
     tiles.coverAllTiles(sprites.castle.rock0, sprites.castle.tilePath5)
 })
-scene.onOverlapTile(SpriteKind.Player, myTiles.tile1, function (sprite, location) {
+scene.onOverlapTile(SpriteKind.Player, assets.tile`tile1`, function (sprite, location) {
     Soldier.setImage(img`
         . . . . f f f f . . . . 
         . . f f e e e e f f . . 
@@ -42,27 +47,55 @@ scene.onOverlapTile(SpriteKind.Player, myTiles.tile1, function (sprite, location
         `)
     Soldier.say("PHEW", 2000)
     info.stopCountdown()
+    startLevel()
 })
+function startLevel () {
+    tiles.setTilemap(tilemap`level2`)
+    for (let index = 0; index <= 5 + levelTilemaps; index++) {
+        Enemy1 = sprites.create(img`
+            . . . . . c c c c c c c . . . . 
+            . . . . c 6 7 7 7 7 7 6 c . . . 
+            . . . c 7 c 6 6 6 6 c 7 6 c . . 
+            . . c 6 7 6 f 6 6 f 6 7 7 c . . 
+            . . c 7 7 7 7 7 7 7 7 7 7 c . . 
+            . . f 7 8 1 f f 1 6 7 7 7 f . . 
+            . . f 6 f 1 f f 1 f 7 7 7 f . . 
+            . . . f f 2 2 2 2 f 7 7 6 f . . 
+            . . c c f 2 2 2 2 7 7 6 f c . . 
+            . c 7 7 7 7 7 7 7 7 c c 7 7 c . 
+            c 7 1 1 1 7 7 7 7 f c 6 7 7 7 c 
+            f 1 1 1 1 1 7 6 f c c 6 6 6 c c 
+            f 1 1 1 1 1 1 6 6 c 6 6 6 c . . 
+            f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
+            . f 6 1 1 1 1 1 6 6 6 6 c . . . 
+            . . f f c c c c c c c c . . . . 
+            `, SpriteKind.Enemy)
+        Enemy1.setPosition(170, 80)
+        projectile = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . f . . . . . . . . 
+            . . . . . . f f f . . . . . . . 
+            . . . . . . . e . . . . . . . . 
+            . . . . . . . e . . . . . . . . 
+            . . . . . . . e . . . . . . . . 
+            . . . . . . . e . . . . . . . . 
+            . . . . . . . e . . . . . . . . 
+            . . . . . . 1 1 1 . . . . . . . 
+            . . . . . 1 . 1 . 1 . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, Soldier, 50, 50)
+    }
+}
+let projectile: Sprite = null
+let Enemy1: Sprite = null
 let Soldier: Sprite = null
 scene.setBackgroundColor(7)
-tiles.setTilemap(tiles.createTilemap(hex`1000100001010101010101040202020202020202060303010101010302020202030306020101030101010108020202030302020201010303010101030102020302020202010101030301010302020203020202020101010103030303030302030202020201010101030202020203030303020202010101010303020202020203030202020101010102030202020202030202020201010101020303030302020302020202010101010202020203020203020202020101010106020202030202030202020201010101030202030302020303020202010303030303030302020202030302020103020203020202020202020203030501070202030303030602020603030202`, img`
-    2 2 2 2 2 2 2 . 2 2 2 2 2 2 2 2 
-    2 . . 2 2 2 2 . 2 2 2 2 . . 2 2 
-    2 2 . 2 2 2 2 2 2 2 2 . . 2 2 2 
-    2 2 . . 2 2 2 . 2 2 2 . 2 2 2 2 
-    2 2 2 . . 2 2 . 2 2 2 . 2 2 2 2 
-    2 2 2 2 . . . . . . 2 . 2 2 2 2 
-    2 2 2 2 . 2 2 2 2 . . . . 2 2 2 
-    2 2 2 2 . . 2 2 2 2 2 . . 2 2 2 
-    2 2 2 2 2 . 2 2 2 2 2 . 2 2 2 2 
-    2 2 2 2 2 . . . . 2 2 . 2 2 2 2 
-    2 2 2 2 2 2 2 2 . 2 2 . 2 2 2 2 
-    2 2 2 2 2 2 2 2 . 2 2 . 2 2 2 2 
-    2 2 2 2 . 2 2 . . 2 2 . . 2 2 2 
-    2 . . . . . . . 2 2 2 2 . . 2 2 
-    2 . 2 2 . 2 2 2 2 2 2 2 2 . . . 
-    2 . 2 2 . . . . 2 2 2 2 . . 2 2 
-    `, [myTiles.transparency16,sprites.castle.tileGrass3,sprites.castle.tileGrass1,sprites.castle.tilePath5,myTiles.tile1,myTiles.tile3,sprites.builtin.forestTiles0,sprites.dungeon.collectibleInsignia,sprites.castle.rock0], TileScale.Sixteen))
+tiles.setTilemap(tilemap`level1`)
 Soldier = sprites.create(img`
     . . . . f f f f . . . . 
     . . f f e e e e f f . . 
@@ -81,7 +114,7 @@ Soldier = sprites.create(img`
     . . . f f f f f f . . . 
     . . . f f . . f f . . . 
     `, SpriteKind.Player)
-Soldier.setPosition(0, 125)
+Soldier.setPosition(26, 248)
 controller.moveSprite(Soldier)
 Soldier.setFlag(SpriteFlag.StayInScreen, true)
 scene.cameraFollowSprite(Soldier)
