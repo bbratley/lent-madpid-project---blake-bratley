@@ -1,3 +1,6 @@
+namespace SpriteKind {
+    export const Enemy1 = SpriteKind.create()
+}
 let levelTilemaps = 0
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     projectile = sprites.createProjectileFromSprite(img`
@@ -90,6 +93,9 @@ function startLevel () {
         Enemy1.setPosition(170, 80)
     }
 }
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    Enemy1.destroy()
+})
 let Enemy1: Sprite = null
 let projectile: Sprite = null
 let Soldier: Sprite = null
