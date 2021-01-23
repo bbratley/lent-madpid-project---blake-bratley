@@ -62,7 +62,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tile1`, function (sprite, loc
         . . . f f f f f f . . . 
         . . . f f . . f f . . . 
         `)
-    Soldier.say("PHEW", 1000)
+    Soldier.say("PHEW", 2000)
     info.stopCountdown()
     startLevel()
 })
