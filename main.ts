@@ -1,6 +1,23 @@
 let levelTilemaps = 0
-controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-	
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    projectile = sprites.createProjectileFromSprite(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . f . . . . . . . . 
+        . . . . . . f f f . . . . . . . 
+        . . . . . . . e . . . . . . . . 
+        . . . . . . . e . . . . . . . . 
+        . . . . . . . e . . . . . . . . 
+        . . . . . . . e . . . . . . . . 
+        . . . . . . . e . . . . . . . . 
+        . . . . . . 1 1 1 . . . . . . . 
+        . . . . . 1 . 1 . 1 . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, Soldier, randint(-30, 30), -130)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tile3`, function (sprite, location) {
     info.startCountdown(10)
@@ -45,7 +62,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tile1`, function (sprite, loc
         . . . f f f f f f . . . 
         . . . f f . . f f . . . 
         `)
-    Soldier.say("PHEW", 2000)
+    Soldier.say("PHEW", 1000)
     info.stopCountdown()
     startLevel()
 })
@@ -71,28 +88,10 @@ function startLevel () {
             . . f f c c c c c c c c . . . . 
             `, SpriteKind.Enemy)
         Enemy1.setPosition(170, 80)
-        projectile = sprites.createProjectileFromSprite(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . f . . . . . . . . 
-            . . . . . . f f f . . . . . . . 
-            . . . . . . . e . . . . . . . . 
-            . . . . . . . e . . . . . . . . 
-            . . . . . . . e . . . . . . . . 
-            . . . . . . . e . . . . . . . . 
-            . . . . . . . e . . . . . . . . 
-            . . . . . . 1 1 1 . . . . . . . 
-            . . . . . 1 . 1 . 1 . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, Soldier, 50, 50)
     }
 }
-let projectile: Sprite = null
 let Enemy1: Sprite = null
+let projectile: Sprite = null
 let Soldier: Sprite = null
 scene.setBackgroundColor(7)
 tiles.setTilemap(tilemap`level1`)
