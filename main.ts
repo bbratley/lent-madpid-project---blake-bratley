@@ -19,7 +19,8 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
-        `, Soldier, randint(-360, 360), randint(-360, 360))
+        `, Soldier, randint(-200, 200), 10)
+    projectile.setBounceOnWall(true)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tile3`, function (sprite, location) {
     info.startCountdown(10)
@@ -45,6 +46,9 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tile3`, function (sprite, loc
     tiles.coverAllTiles(assets.tile`tile3`, sprites.castle.tileGrass3)
     tiles.coverAllTiles(sprites.castle.rock0, sprites.castle.tilePath5)
 })
+statusbars.onZero(StatusBarKind.Health, function (status) {
+	
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tile1`, function (sprite, location) {
     Soldier.setImage(img`
         . . . . f f f f . . . . 
@@ -68,6 +72,31 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tile1`, function (sprite, loc
     info.stopCountdown()
     startLevel()
 })
+sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
+    music.playTone(262, music.beat(BeatFraction.Breve))
+    otherSprite = sprites.create(img`
+        . . . . . c c c c c c c . . . . 
+        . . . . c 6 7 7 7 7 7 6 c . . . 
+        . . . c 7 c 6 6 6 6 c 7 6 c . . 
+        . . c 6 7 6 f 6 6 f 6 7 7 c . . 
+        . . c 7 7 7 7 7 7 7 7 7 7 c . . 
+        . . f 7 8 1 f f 1 6 7 7 7 f . . 
+        . . f 6 f 1 f f 1 f 7 7 7 f . . 
+        . . . f f 2 2 2 2 f 7 7 6 f . . 
+        . . c c f 2 2 2 2 7 7 6 f c . . 
+        . c 7 7 7 7 7 7 7 7 c c 7 7 c . 
+        c 7 1 1 1 7 7 7 7 f c 6 7 7 7 c 
+        f 1 1 1 1 1 7 6 f c c 6 6 6 c c 
+        f 1 1 1 1 1 1 6 6 c 6 6 6 c . . 
+        f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
+        . f 6 1 1 1 1 1 6 6 6 6 c . . . 
+        . . f f c c c c c c c c . . . . 
+        `, SpriteKind.Enemy)
+    otherSprite.setPosition(170, 80)
+    otherSprite.setStayInScreen(true)
+    otherSprite.follow(Soldier, 20)
+    otherSprite.setBounceOnWall(true)
+})
 function startLevel () {
     tiles.setTilemap(tilemap`level2`)
     otherSprite = sprites.create(img`
@@ -90,7 +119,8 @@ function startLevel () {
         `, SpriteKind.Enemy)
     otherSprite.setPosition(170, 80)
     otherSprite.setStayInScreen(true)
-    otherSprite.follow(Soldier, 60)
+    otherSprite.follow(Soldier, 20)
+    otherSprite.setBounceOnWall(true)
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy()
