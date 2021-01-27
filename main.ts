@@ -1,7 +1,6 @@
 namespace SpriteKind {
     export const Enemy1 = SpriteKind.create()
 }
-let levelTilemaps = 0
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     projectile = sprites.createProjectileFromSprite(img`
         . . . . . . . . . . . . . . . . 
@@ -9,18 +8,18 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
-        . . . . . . . f . . . . . . . . 
-        . . . . . . f f f . . . . . . . 
-        . . . . . . . e . . . . . . . . 
-        . . . . . . . e . . . . . . . . 
-        . . . . . . . e . . . . . . . . 
-        . . . . . . . e . . . . . . . . 
-        . . . . . . . e . . . . . . . . 
-        . . . . . . 1 1 1 . . . . . . . 
-        . . . . . 1 . 1 . 1 . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . f 1 f f . . . . . . 
+        . . . . . f 1 f f f f . . . . . 
+        . . . . . f 1 f f f f . . . . . 
+        . . . . . . f f f f . . . . . . 
+        . . . . . . . f f . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
-        `, Soldier, randint(-30, 30), -130)
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, Soldier, randint(-360, 360), randint(-360, 360))
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tile3`, function (sprite, location) {
     info.startCountdown(10)
@@ -71,32 +70,36 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tile1`, function (sprite, loc
 })
 function startLevel () {
     tiles.setTilemap(tilemap`level2`)
-    for (let index = 0; index <= 5 + levelTilemaps; index++) {
-        Enemy1 = sprites.create(img`
-            . . . . . c c c c c c c . . . . 
-            . . . . c 6 7 7 7 7 7 6 c . . . 
-            . . . c 7 c 6 6 6 6 c 7 6 c . . 
-            . . c 6 7 6 f 6 6 f 6 7 7 c . . 
-            . . c 7 7 7 7 7 7 7 7 7 7 c . . 
-            . . f 7 8 1 f f 1 6 7 7 7 f . . 
-            . . f 6 f 1 f f 1 f 7 7 7 f . . 
-            . . . f f 2 2 2 2 f 7 7 6 f . . 
-            . . c c f 2 2 2 2 7 7 6 f c . . 
-            . c 7 7 7 7 7 7 7 7 c c 7 7 c . 
-            c 7 1 1 1 7 7 7 7 f c 6 7 7 7 c 
-            f 1 1 1 1 1 7 6 f c c 6 6 6 c c 
-            f 1 1 1 1 1 1 6 6 c 6 6 6 c . . 
-            f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
-            . f 6 1 1 1 1 1 6 6 6 6 c . . . 
-            . . f f c c c c c c c c . . . . 
-            `, SpriteKind.Enemy)
-        Enemy1.setPosition(170, 80)
-    }
+    otherSprite = sprites.create(img`
+        . . . . . c c c c c c c . . . . 
+        . . . . c 6 7 7 7 7 7 6 c . . . 
+        . . . c 7 c 6 6 6 6 c 7 6 c . . 
+        . . c 6 7 6 f 6 6 f 6 7 7 c . . 
+        . . c 7 7 7 7 7 7 7 7 7 7 c . . 
+        . . f 7 8 1 f f 1 6 7 7 7 f . . 
+        . . f 6 f 1 f f 1 f 7 7 7 f . . 
+        . . . f f 2 2 2 2 f 7 7 6 f . . 
+        . . c c f 2 2 2 2 7 7 6 f c . . 
+        . c 7 7 7 7 7 7 7 7 c c 7 7 c . 
+        c 7 1 1 1 7 7 7 7 f c 6 7 7 7 c 
+        f 1 1 1 1 1 7 6 f c c 6 6 6 c c 
+        f 1 1 1 1 1 1 6 6 c 6 6 6 c . . 
+        f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
+        . f 6 1 1 1 1 1 6 6 6 6 c . . . 
+        . . f f c c c c c c c c . . . . 
+        `, SpriteKind.Enemy)
+    otherSprite.setPosition(170, 80)
+    otherSprite.setStayInScreen(true)
+    otherSprite.follow(Soldier, 60)
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
-    Enemy1.destroy()
+    otherSprite.destroy()
+    music.powerDown.play()
 })
-let Enemy1: Sprite = null
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    game.over(false)
+})
+let otherSprite: Sprite = null
 let projectile: Sprite = null
 let Soldier: Sprite = null
 scene.setBackgroundColor(7)
